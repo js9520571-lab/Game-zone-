@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Games Zone | Dashboard</title>
+    <style>
+        /* Color Palette & Base Styles */
+        :root {
+            --bg-deep: #0a0b1e;
+            --card-bg: #16213e;
+            --neon-blue: #00d2ff;
+            --neon-purple: #8a2be2;
+            --text-light: #e0e0e0;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-light);
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Desktop Window Simulator */
+        .desktop-window {
+            width: 90%;
+            max-width: 1000px;
+            background: rgba(22, 33, 62, 0.8);
+            border: 2px solid var(--neon-purple);
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
+            padding: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .subtitle {
+            color: var(--neon-purple);
+            margin-bottom: 40px;
+            font-weight: bold;
+        }
+
+        /* The Game Grid */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+        }
+
+        .game-card {
+            background: var(--card-bg);
+            border: 1px solid transparent;
+            padding: 30px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        /* Game Style Hover Effects */
+        .game-card:hover {
+            border-color: var(--neon-blue);
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
+            background: var(--neon-purple);
+            color: white;
+        }
+
+        /* Notification Toast */
+        #status-bar {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: var(--neon-blue);
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="desktop-window">
+        <h1>AI Games Zone</h1>
+        <p class="subtitle">Select an Engine to Initialize</p>
+
+        <div class="games-grid" id="grid">
+            <!-- JavaScript will populate 10 games here -->
+        </div>
+
+        <div id="status-bar">System Ready...</div>
+    </div>
+
+    <script>
+        const games = [
+            "AI Shooter", "World Creator", "Space Dodge", 
+            "Neural Maze", "Cipher Quest", "Neon Racer", 
+            "Bot Combat", "Logic Gate", "Vortex Jump", "Pattern Match"
+        ];
+
+        const grid = document.getElementById('grid');
+        const statusBar = document.getElementById('status-bar');
+
+        games.forEach(game => {
+            const card = document.createElement('div');
+            card.className = 'game-card';
+            card.innerText = game;
+            
+            card.onclick = () => {
+                statusBar.innerText = `Booting ${game} Environment...`;
+                setTimeout(() => {
+                    statusBar.innerText = `${game} is running (Simulated)`;
+                }, 2000);
+            };
+
+            grid.appendChild(card);
+        });
+    </script>
+</body>
+</html>
