@@ -3,132 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Games Zone | Dashboard</title>
+    <title>AI x Human | Cyber-Vortex Hub</title>
+    <!-- Importing Three.js for 3D Graphics -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
-        /* Color Palette & Base Styles */
         :root {
-            --bg-deep: #0a0b1e;
-            --card-bg: #16213e;
-            --neon-blue: #00d2ff;
-            --neon-purple: #8a2be2;
-            --text-light: #e0e0e0;
+            --primary-blue: #00d2ff;
+            --primary-purple: #9d50bb;
+            --glass: rgba(15, 15, 35, 0.85);
         }
 
-        body {
-            background-color: var(--bg-deep);
-            color: var(--text-light);
-            font-family: 'Segoe UI', sans-serif;
+        body, html {
             margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #050510;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            color: white;
         }
 
-        /* Desktop Window Simulator */
-        .desktop-window {
-            width: 90%;
-            max-width: 1000px;
-            background: rgba(22, 33, 62, 0.8);
-            border: 2px solid var(--neon-purple);
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
+        /* 3D Canvas Background */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* UI Layer */
+        .dashboard {
+            position: relative;
+            z-index: 1;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .glass-panel {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
             padding: 40px;
+            width: 80%;
+            max-width: 900px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
             text-align: center;
         }
 
         h1 {
-            font-size: 3rem;
-            color: var(--neon-blue);
+            font-size: 2.5rem;
+            background: linear-gradient(to right, var(--primary-blue), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 4px;
+            margin-bottom: 5px;
+        }
+
+        .collab-tag {
+            font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 5px;
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px var(--neon-blue);
+            letter-spacing: 2px;
+            color: var(--primary-blue);
+            margin-bottom: 30px;
         }
 
-        .subtitle {
-            color: var(--neon-purple);
-            margin-bottom: 40px;
-            font-weight: bold;
-        }
-
-        /* The Game Grid */
-        .games-grid {
+        .game-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
         }
 
         .game-card {
-            background: var(--card-bg);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 12px;
             border: 1px solid transparent;
-            padding: 30px 15px;
-            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
+            transition: 0.3s;
         }
 
-        /* Game Style Hover Effects */
         .game-card:hover {
-            border-color: var(--neon-blue);
-            transform: translateY(-5px);
-            box-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
-            background: var(--neon-purple);
-            color: white;
+            border-color: var(--primary-purple);
+            background: rgba(157, 80, 187, 0.2);
+            transform: scale(1.05);
         }
 
-        /* Notification Toast */
-        #status-bar {
-            margin-top: 30px;
+        #terminal {
+            font-family: 'Courier New', Courier, monospace;
+            color: #00ff00;
             font-size: 0.9rem;
-            color: var(--neon-blue);
-            height: 20px;
+            text-align: left;
+            margin-top: 20px;
+            padding: 10px;
+            background: #000;
+            border-radius: 5px;
+            height: 60px;
+            overflow: hidden;
         }
     </style>
 </head>
 <body>
 
-    <div class="desktop-window">
-        <h1>AI Games Zone</h1>
-        <p class="subtitle">Select an Engine to Initialize</p>
+<canvas id="bg-canvas"></canvas>
 
-        <div class="games-grid" id="grid">
-            <!-- JavaScript will populate 10 games here -->
+<div class="dashboard">
+    <div class="glass-panel">
+        <h1>AI GAMES ZONE</h1>
+        <div class="collab-tag">Crafted by Human Vision x AI Intelligence</div>
+        
+        <div class="game-grid" id="gameGrid">
+            <!-- Dynamic Injection -->
         </div>
 
-        <div id="status-bar">System Ready...</div>
+        <div id="terminal">> Initializing Neural Link...</div>
     </div>
+</div>
 
-    <script>
-        const games = [
-            "AI Shooter", "World Creator", "Space Dodge", 
-            "Neural Maze", "Cipher Quest", "Neon Racer", 
-            "Bot Combat", "Logic Gate", "Vortex Jump", "Pattern Match"
-        ];
+<script>
+    // 1. SCENE SETUP (THREE.JS)
+    const canvas = document.querySelector('#bg-canvas');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
 
-        const grid = document.getElementById('grid');
-        const statusBar = document.getElementById('status-bar');
+    // Creating a Starfield/Vortex effect
+    const geometry = new THREE.BufferGeometry();
+    const vertices = [];
+    for (let i = 0; i < 6000; i++) {
+        vertices.push(THREE.MathUtils.randFloatSpread(1000), THREE.MathUtils.randFloatSpread(1000), THREE.MathUtils.randFloatSpread(1000));
+    }
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+    const material = new THREE.PointsMaterial({ color: 0x00d2ff, size: 0.7 });
+    const points = new THREE.Points(geometry, material);
+    scene.add(points);
+    camera.position.z = 1;
 
-        games.forEach(game => {
-            const card = document.createElement('div');
-            card.className = 'game-card';
-            card.innerText = game;
-            
-            card.onclick = () => {
-                statusBar.innerText = `Booting ${game} Environment...`;
-                setTimeout(() => {
-                    statusBar.innerText = `${game} is running (Simulated)`;
-                }, 2000);
-            };
+    function animate() {
+        requestAnimationFrame(animate);
+        points.rotation.y += 0.001;
+        points.rotation.z += 0.0005;
+        renderer.render(scene, camera);
+    }
+    animate();
 
-            grid.appendChild(card);
-        });
-    </script>
+    // 2. UI LOGIC
+    const games = ["Neural Shooter", "World Gen v1", "Vortex Racer", "Logic Pulse", "Grid Combat", "Cyber Quest", "Data Maze", "Pattern AI", "Space Shift", "Kernel War"];
+    const grid = document.getElementById('gameGrid');
+    const term = document.getElementById('terminal');
+
+    games.forEach(game => {
+        const div = document.createElement('div');
+        div.className = 'game-card';
+        div.innerText = game;
+        div.onclick = () => {
+            term.innerHTML = `> Executing ${game}...<br>> Human Intent Verified. AI Optimization Active.`;
+        };
+        grid.appendChild(div);
+    });
+
+    // 3. COLLABORATION MESSAGE
+    setTimeout(() => {
+        term.innerHTML = "> SYSTEM: Human-AI collaboration established.<br>> STATUS: Ready to create the impossible.";
+    }, 2000);
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+</script>
+
 </body>
 </html>
